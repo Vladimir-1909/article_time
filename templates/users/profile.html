@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Кабинет пользователя{% endblock %}
+
+{% block content %}
+<div class="col-11 flex-shrink-0 p-3 bg-white more_details">
+    <div class="form-section">
+        <h1>Профиль</h1>
+        {% if messages %}
+        {% for mess in messages %}
+        <div class="mess_prof">{{ mess }}</div>
+        {% endfor %}
+        {% endif %}
+        <div class="profile">
+            <div class="profile_vid">
+                <img class="user_images" src="{{ user.profile.img.url }}" width="100" height="100">
+                <p><b>@{{ user.username }}</b></p>
+                {% if user.email %}
+                <p><b>Email:</b> {{ user.email }}</p>
+                {% endif %}
+                <div class="profile_btn">
+                    <a href="{% url 'exit' %}">
+                        <button class="btn btn-primary">Выйти из кабинета</button>
+                    </a>
+                </div>
+            </div>
+            <div class="profile__iz">
+                <h2>Изменить данные</h2>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ update_user }}
+                    {{ img_profile }}
+                    <div class="profile_btn">
+                        <button type="submit" class="btn btn-primary">Обновить данные</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

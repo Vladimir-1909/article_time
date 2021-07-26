@@ -1,0 +1,16 @@
+{% load static %}
+
+<div class="card card-cover h-80 overflow-hidden text-white bg-dark rounded-5 shadow-lg"
+     style="background-image: url({{ article.img_article.url }});">
+  <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1 text-center">
+    <h2 class="pt-5 mb-5 display-6 lh-1 fw-bold stroke">{{ category }}</h2>
+    <ul class="d-flex list-unstyled mt-auto">
+      <li class="me-auto">
+        <img src="{% static 'img/article_logo.png' %}" alt="Article logo" width="32" height="32">
+      </li>
+      <li class="d-flex align-items-center me-3 small_li">
+        <a href="/article/{{ article.slug }}/" class="btn btn-primary">More details</a>
+      </li>
+    </ul>
+  </div>
+</div>

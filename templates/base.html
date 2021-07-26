@@ -1,0 +1,128 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/title_logo.png' %}" type="image/x-icon" />
+    <title>{% block title %}{{ title }}{% endblock %}</title>
+</head>
+<body>
+<div class="row container">
+    <div class="col-1 d-flex flex-column flex-shrink-0 bg-light none_mobile">
+
+        <div class="dropdown border-top">
+          <a href="#" class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle" id="dropdownUser3" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{% if not user.is_authenticated %}{% static 'img/profile_icon.png' %}{% else %}{{ user.profile.img.url }}{% endif %}" alt="Photo profile" width="24" height="24" class="rounded-circle">
+          </a>
+          <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser3">
+            {% if not user.is_authenticated %}
+            <li><a class="dropdown-item" href="{% url 'login' %}">Войти</a></li>
+            <li><a class="dropdown-item" href="{% url 'reg' %}">Регистрация</a></li>
+            {% else %}
+            <li><a class="dropdown-item" href="{% url 'article_add' %}">Добавить статью</a></li>
+            <li><a class="dropdown-item" href="{% url 'profile' %}">Профиль</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'exit' %}">Выйти</a></li>
+            {% endif %}
+          </ul>
+        </div>
+
+      <ul class="nav nav-pills nav-flush flex-column mb-auto text-center mt-3">
+        <li class="nav-item">
+          <a href="/" class="nav-link nav_menu active py-3" title=""
+             data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+            <img src="{% static 'img/home_icon.png' %}" alt="Home icon" width="25" height="25">
+          </a>
+        </li>
+        <li class="nav-item mt-1">
+            <button class="nav-link dropdown-toggle nav_menu py-3"
+               id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{% static 'img/category_icon.png' %}" class="category_img" alt="Category icon" width="25" height="25">
+          </button>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+              {% for category in categories %}
+                <li><a class="dropdown-item" href="/category/{{ category.slug }}">{{ category.title }}</a></li>
+              {% endfor %}
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    {% block content %}
+
+    <div class="col-12 col-md-5 flex-shrink-0 p-3 bg-white ">
+        <div class="px-4 py-5 text-center article_home more_details">
+          {% block category %}
+              <img class="d-block mx-auto mb-4 logo_img" src="{% static 'img/article_logo.png' %}" alt="Article logo" width="200" height="200">
+              <h1 class="fw-bold">Article Time</h1>
+          {% endblock %}
+        </div>
+
+      <ul class="list-unstyled ps-0">
+        <li class="mb-1">
+          <a href="/" class="link-dark text-decoration-none">
+            <img src="{% static 'img/home_icon.png' %}" alt="Image list article" width="25" height="25">
+            <span class="fw-bold">Home</span>
+          </a>
+        </li>
+        <li class="mb-1">
+            <img src="{% static 'img/category_icon.png' %}" alt="Image list article" width="25" height="25">
+            <button class="btn btn-toggle align-items-center rounded collapsed ml-1" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
+                Categories
+            </button>
+          <div class="collapse" id="dashboard-collapse">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                {% for category in categories %}
+                    <li><a href="/category/{{ category.slug }}" class="link-dark rounded"> - {{ category.title }}</a></li>
+                {% endfor %}
+            </ul>
+          </div>
+        </li>
+          <li class="mb-1">
+            <img src="{% static 'img/date_icon.png' %}" alt="Image list article" width="25" height="25">
+            <button class="btn btn-toggle align-items-center rounded collapsed ml-1" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse-data" aria-expanded="false">
+                Date publication
+            </button>
+          <div class="collapse" id="dashboard-collapse-data">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                {% for date in date_all %}
+                    <li>
+                        <a href="#" class="link-dark rounded date-filter"
+                           data-date="{{ date|date:'Y-m-d' }}">
+                            {{ date }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="col-12 col-md-6 d-flex flex-column align-items-stretch flex-shrink-0 bg-white more_list">
+        {% include 'article/includes/article_list.html' %}
+    </div>
+    {% endblock %}
+</div>
+<footer class="container">
+    <div class="footer">
+        <p>Все права защищены 2021&copy;</p>
+        <p>
+            <a href="#top"><img src="{% static '/img/facebook.png' %}" alt="icon" class="footer_icon"></a>
+            <a href="#top"><img src="{% static '/img/instagram.png' %}" alt="icon" class="footer_icon"></a>
+            <a href="#top"><img src="{% static '/img/google.png' %}" alt="icon" class="footer_icon"></a>
+            <a href="#top"><img src="{% static '/img/twitter.png' %}" alt="icon" class="footer_icon"></a>
+        </p>
+    </div>
+</footer>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'js/main.js' %}"></script>
+{% block extra_bottom_js %}
+{% endblock extra_bottom_js%}
+</body>
+</html>

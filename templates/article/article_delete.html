@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="col-11 flex-shrink-0 p-3 bg-white more_details">
+    <h1>{{ title }}</h1>
+    <form method="post" class="form-register">
+        <h3>Вы точно хотите удалить статью?</h3>
+        <h5>"{{ object.title }}"</h5> <!-- object - это сам обьект "статья"-->
+        {% csrf_token %}
+        <button class="btn btn-outline-danger" type="submit">{{ btn_text_yes }}</button>
+        <a href="{% url 'article_detail' object.slug %}" class="btn btn-outline-success">{{ btn_text_no }}</a> <!-- object - это сам обьект "статья"-->
+    </form>
+</div>
+{% endblock %}

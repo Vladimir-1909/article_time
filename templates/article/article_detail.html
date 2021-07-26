@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+
+<div class="col-11 flex-shrink-0 p-3 bg-white more_details">
+<a class="back-link" style="cursor:pointer;">Back</a>
+  <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+      <div class="col-10 col-sm-8 col-lg-6">
+        <img src="{{ article.img_article.url }}" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+      </div>
+      <div class="col-lg-6">
+        <h5 class="fw-bold">{{ article.title }}</h5>
+        <ps>{{ article.body }}</ps>
+      </div>
+    </div>
+    {% if object.avtor == user %}
+        <hr>
+        <a href="{% url 'article_update' object.slug %}" class="btn btn-info">Обновить статью</a>
+        <a href="{% url 'article_delete' object.slug %}" class="btn btn-danger">Удалить статью</a>
+    {% endif %}
+</div>
+{% endblock %}

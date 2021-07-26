@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="col-11 flex-shrink-0 p-3 bg-white more_details">
+    <div class="col-md-10 mx-auto col-lg-5">
+        <form class="p-4 p-md-5 border rounded-3 bg-light" method="POST">
+            <h5>{{ title }}</h5>
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-floating mb-3">
+                    {{ field.errors }}
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Зарегистрироваться</button>
+            <span>Уже зарегистрированы? <a href="{% url 'login' %}" class="a_s">Войти</a></span>
+        </form>
+    </div>
+</div>
+{% endblock %}

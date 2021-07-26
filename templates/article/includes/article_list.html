@@ -1,0 +1,61 @@
+{% load static %}
+<a href="/" class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+  <img src="{% static 'img/article_list.png' %}" alt="Image list article" width="25" height="25">
+  <span class="fs-5 fw-bold">List article</span>
+</a>
+
+<div class="list-group list-group-flush border-bottom scrollarea">
+  {% if not articles %}
+  <div class="text-center">
+    <h2>No article <img src="{% static 'img/sadness_icon.png' %}" alt="Sadness_icon" width="50" height="50"></h2>
+  </div>
+
+  {% endif %}
+  {% for article in articles %}
+  <div class="list-group-item list-group-item-action py-3 lh-tight article"
+     aria-current="true" data-slug="{{ article.slug }}" style="cursor:pointer;">
+    <div class="d-flex w-100 align-items-center justify-content-between">
+      <strong class="mb-1">{{ article.title }}</strong>
+      <small>{{ article.date_pub|date:"D" }}</small>
+    </div>
+    <div class="col-10 mb-1 small">{{ article.body|truncatechars:300 }}</div>
+    <div class="d-flex text-muted avtor_img">
+        <img src="{{ article.avtor.profile.img.url }}" alt="Photo avtor" height="50" width="50">
+        <strong class="d-block text-gray-dark">@{{ article.avtor }}</strong>
+        <strong class="d-block text-gray-dark article_all_user">
+          <a href="/user/{{ article.avtor }}" >Посмотреть все статьи автора</a>
+        </strong>
+    </div>
+  </div>
+  {% endfor %}
+
+  {% if is_paginated %}
+  <nav class="pt-3" style="margin:auto;">
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+      {% endif %}
+      </li>
+      {% for num in page_obj.paginator.page_range %}
+        {% if num == page_obj.number %}
+          <li class="page-item active" aria-current="page"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'  %}
+          <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+      {% endif %}
+      </li>
+    </ul>
+  </nav>
+  {% endif %}
+</div>
